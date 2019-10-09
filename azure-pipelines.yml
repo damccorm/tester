@@ -16,3 +16,7 @@ steps:
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
+
+- task: github.com/damccorm/example-checked-in-task-repo/tasks/node-task@master
+  inputs:
+    bar: "world"
