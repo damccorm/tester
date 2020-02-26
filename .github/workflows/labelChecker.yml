@@ -16,7 +16,14 @@ jobs:
     steps:
     - run: |
         label_count=0
-        pull_request_number=2787
+
+        #GITHUB_REF has the form of refs/pull/<number>/merge
+        pull_request_number=$(basename $(dirname $GITHUB_REF))
+
+        echo "Pull Request number: $pull_request_number"
+        echo
+        echo "Getting pull request labels"
+        echo
 
         labels=$(curl https://api.github.com/repos/microsoft/azure-pipelines-agent/issues/$pull_request_number/labels | tr '[:upper:]' '[:lower:]')
         if [[ $labels == *"\"name\": \"bug\"",* ]]; then
@@ -36,7 +43,7 @@ jobs:
             label_count=$((label_count+1))
         fi
 
-        echo ""
+        echo
 
         if [[ $label_count == 0 ]]; then
             echo "Must be labeled one of [bug, enhancement, misc, internal]"
@@ -47,5 +54,3 @@ jobs:
             echo "Cannot contain more than one label of [bug, enhancement, misc, internal]. Currently contains $label_count"
             exit 1
         fi
-        
-    - run: set
