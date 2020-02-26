@@ -5,7 +5,9 @@ const github = require('@actions/github');
 async function main() {
     try {
         const pullRequestNumber = github.context.issue.number;
+        console.log(`Running for PR: ${pullRequestNumber}\n`);
         let rest = new rm.RestClient('labelChecker');
+        console.log('Getting label info\n')
         let res = await rest.get(`https://api.github.com/repos/microsoft/azure-pipelines-agent/issues/${pullRequestNumber}/labels`);
         let labelCount = 0;
         res.result.forEach(tag => {
